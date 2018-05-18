@@ -1,4 +1,4 @@
-// var Sample = require("../models/Sample");
+var dotenv = require("dotenv");
 const axios = require('axios');
 
 /**
@@ -91,6 +91,12 @@ const axios = require('axios');
 //     }
 // ]
 
+
+/**
+ * Load environment variables from .env file, where API keys and passwords are configured.
+ */
+dotenv.config();
+
 function betting() {
     console.log("\n----- Running betting task -----");
 
@@ -107,7 +113,25 @@ function betting() {
             console.log("[Bitfinex]: ", response4.data.high);
             console.log("[Upbit]: ", response5.data[0].tradePrice);
 
+            var prices = [parseFloat(response1.data.ticker.buy), parseFloat(response2.data.price), parseFloat(response3.data.tick.high), parseFloat(response4.data.high), parseFloat(response5.data[0].tradePrice)];
+            var median, sum = 0, bad = false, avg = 5;
 
+            // calculate average
+            for (var i = 0; i < 5; i ++){
+                sum += prices[i];
+            }
+            median = sum / 5;
+            console.log("[median] : ", median);
+
+
+            // determine bad
+            for (i = 0; i < 5; i ++){
+                if (Math.abs(prices[i] - avg) > process.env.DIFF_LIMIT){
+                    bad = true;
+                    avg = 4;
+                    break;
+                }
+            }
     })).catch(error => {
         console.log(error);
     });
