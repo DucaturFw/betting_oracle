@@ -1,6 +1,17 @@
 var dotenv = require("dotenv");
 const axios = require('axios');
 
+var Web3 = require('web3');
+var contract = require('truffle-contract');
+var CSBetting = require('../../build/contracts/CSBetting.json');
+var HDWalletProvider = require("truffle-hdwallet-provider");
+
+const hdWalletProvider = new HDWalletProvider(process.env.MNE, "https://ropsten.infura.io/VaxMZqBPDeLCJNBAsNN1");
+const ownerAddress = hdWalletProvider.address;
+const web3 = new Web3(hdWalletProvider);
+const bet_contract = contract(CSBetting);
+bet_contract.setProvider(web3.currentProvider);
+
 /**
  * OKEx API keys
  */
@@ -116,22 +127,45 @@ function betting() {
             var prices = [parseFloat(response1.data.ticker.buy), parseFloat(response2.data.price), parseFloat(response3.data.tick.high), parseFloat(response4.data.high), parseFloat(response5.data[0].tradePrice)];
             var median, sum = 0, bad = false, avg = 5;
 
-            // calculate average
+            /**
+             * calculate average
+             */
             for (var i = 0; i < 5; i ++){
                 sum += prices[i];
             }
             median = sum / 5;
             console.log("[median] : ", median);
 
-
-            // determine bad
+            /**
+             * determine if exchange is bad
+             */
             for (i = 0; i < 5; i ++){
-                if (Math.abs(prices[i] - avg) > process.env.DIFF_LIMIT){
+                if (Math.abs(prices[i] - avg) > process.env.DIFF_LIMIT_X){
                     bad = true;
                     avg = 4;
                     break;
                 }
             }
+
+            /**
+             * Bet Contract with Infra.io
+             */
+            bet_contract.at(process.env.CONTRACTADDR)
+                .then(contract => {
+                    /**
+                     * determine if differs from Y->curRate by W%
+                     */
+                    contract.curRate().then(value =>{
+                        var curRate = parseInt(value);
+                        console.log("[Y->curRate] ", curRate);
+
+
+                    }).catch(err => {
+                        console.log("[Error when read curRate from contract] ", err);
+                    });
+            });
+
+
     })).catch(error => {
         console.log(error);
     });
