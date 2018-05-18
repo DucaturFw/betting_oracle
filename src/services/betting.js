@@ -13,7 +13,7 @@ const bet_contract = contract(CSBetting);
 bet_contract.setProvider(web3.currentProvider);
 
 /**
- * OKEx API keys
+ * OKEx
  */
 // - url: https://www.okex.com/api/v1/ticker.do?symbol=btc_usdt
 // - response:
@@ -159,12 +159,29 @@ function betting() {
                         var curRate = parseInt(value);
                         console.log("[Y->curRate] ", curRate);
 
+                        if (Math.abs(curRate - median) > process.env.DIFF_LIMIT_W)
+                        {
+                            /**
+                             * Set contract Y-> setPrice (x1, x2, x3, x4, x5, bad, avg)
+                             */
+                            contract.setRate.sendTransaction(parseInt(prices[0]), parseInt(prices[1]), parseInt(prices[2]),
+                                parseInt(prices[3]), parseInt(prices[4]), parseInt(bad), parseInt(avg), {
+                                from: hdWalletProvider.address,
+                                gas: 211238,
+                                gasPrice: 10000000000 // 1 gwei = 10^9
+                            }).then(result => {
 
+                                console.log("[Transaction Hash] ", result);
+                                console.log(" Price has been updated successfully!!! ");
+
+                            }).catch(err => {
+                                console.log("[Set Contract Error] ", err.message);
+                            });
+                        }
                     }).catch(err => {
-                        console.log("[Error when read curRate from contract] ", err);
+                        console.log("[Error when read curRate from contract] ", err.message);
                     });
             });
-
 
     })).catch(error => {
         console.log(error);

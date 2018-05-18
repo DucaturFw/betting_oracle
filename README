@@ -1,93 +1,46 @@
-## betting_oracle
-btcusd oracle service
-
-/**
- * OKEx API keys
- */
-- url: https://www.okex.com/api/v1/ticker.do?symbol=btc_usdt
-- response:
-{
-    "date": "1526630139",
-    "ticker": {
-    "high": "8369.0000",
-        "vol": "28815.8917",
-        "last": "8092.0254",
-        "low": "7918.0906",
-        "buy": "8092.1066",  //it!
-        "sell": "8099.5000"
-     }
-}
-
-/**
- * Binanace
- */
-- url: https://www.binance.com/api/v3/ticker/price?symbol=BTCUSDT
-- response:
-{
-    "symbol": "BTCUSDT",
-    "price": "8095.36000000" //it!
-}
-
-/**
- * Huobi
- */
-- url: https://api.huobi.pro/market/detail?symbol=btcusdt
-- response:
-{
-    "status":"ok",
-    "ch":"market.btcusdt.detail",
-    "ts":1526630691846,
-    "tick":
-        {
-            "amount":17603.284869391556461406,
-            "open":8267.360000000000000000,
-            "close":8110.000000000000000000,
-            "high":8364.300000000000000000,  //it!
-            "id":7572612314,
-            "count":134011,
-            "low":7892.530000000000000000,
-            "version":7572612314,
-            "vol":143185991.280065364351457938390000000000000000
-        }
-}
-
-/**
- * Bitfinex
- */
-- url: https://api.bitfinex.com/v1//pubticker/btcusd
-- response:
-{
-    "mid": "8090.15",
-    "bid": "8090.1",
-    "ask": "8090.2",
-    "last_price": "8090.1",
-    "low": "7925.0",
-    "high": "8363.0",    //it!
-    "volume": "27176.28888098",
-    "timestamp": "1526630903.732889"
-}
+# Ducatur Dapp
+NodeJS Betting Oracle Dapp with ethereum smart contract and infura.io
 
 
-/**
- * Upbit
- */
-- url: https://crix-api.upbit.com/v1/crix/trades/ticks?code=CRIX.UPBIT.USDT-BTC&count=1
-- response:
-[
-    {
-        "code": "CRIX.UPBIT.USDT-BTC",
-        "tradeDate": "2018-05-18",
-        "tradeTime": "08:21:12",
-        "tradeDateKst": "2018-05-18",
-        "tradeTimeKst": "17:21:12",
-        "tradeTimestamp": 1526631672227,
-        "tradePrice": 8130,
-        "tradeVolume": 0.60631367,
-        "prevClosingPrice": 8014.89253377,
-        "change": "RISE",
-        "changePrice": 115.10746623,
-        "askBid": "BID",
-        "sequentialId": 15266316648400004,
-        "timestamp": 1526631664840
-    }
-]
+## Deployed smart contract (Ropsten)
+https://ropsten.etherscan.io/address/0x2537cc4bc56f76e6e6aa901648df849166b595e7
+
+
+## Requirements
+
+To run tests you need to install the following software:
+
+- [Truffle v3.2.4](https://github.com/trufflesuite/truffle-core)
+- [EthereumJS TestRPC v3.0.5](https://github.com/ethereumjs/testrpc)
+
+
+## How to test
+
+Open the terminal and run the following commands:
+
+```sh
+$ cd dapp_ducatur
+$ npm install
+$ truffle compile
+$ node index.js
+```
+
+NOTE: All tests must be run separately as specified.
+
+
+## Deployment
+
+To deploy smart contracts to live network do the following steps:
+1. Go to the smart contract folder and run truffle console:
+```sh
+$ cd dapp_ducatur
+$ truffle console
+```
+2. Inside truffle console, invoke "migrate" command to deploy contracts:
+```sh
+truffle> migrate
+```
+3. Deploy to ethereum test network
+```sh
+update truffle-config.js and migrate
+```
