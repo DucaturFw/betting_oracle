@@ -17,8 +17,9 @@
   },
   "homepage": "https://github.com/StarNeit/bw-token-daemon#readme",
   "dependencies": {
-    "express": "^4.16.2",
+    "axios": "^0.18.0",
     "dotenv": "^4.0.0",
+    "express": "^4.16.2",
     "moment": "^2.19.4",
     "mongodb": "^3.0.0-rc0",
     "mongoose": "^4.13.6",

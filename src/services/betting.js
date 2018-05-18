@@ -1,4 +1,5 @@
 // var Sample = require("../models/Sample");
+const axios = require('axios');
 
 /**
  * OKEx API keys
@@ -8,7 +9,7 @@
 // {
 //     "date": "1526630139",
 //     "ticker": {
-//     "high": "8369.0000",
+//         "high": "8369.0000",
 //         "vol": "28815.8917",
 //         "last": "8092.0254",
 //         "low": "7918.0906",
@@ -66,10 +67,50 @@
 //     "timestamp": "1526630903.732889"
 // }
 
+/**
+ * Upbit
+ */
+// - url: https://crix-api.upbit.com/v1/crix/trades/ticks?code=CRIX.UPBIT.USDT-BTC&count=1
+// - response:
+// [
+//     {
+//         "code": "CRIX.UPBIT.USDT-BTC",
+//         "tradeDate": "2018-05-18",
+//         "tradeTime": "08:21:12",
+//         "tradeDateKst": "2018-05-18",
+//         "tradeTimeKst": "17:21:12",
+//         "tradeTimestamp": 1526631672227,
+//         "tradePrice": 8130,              //it!
+//         "tradeVolume": 0.60631367,
+//         "prevClosingPrice": 8014.89253377,
+//         "change": "RISE",
+//         "changePrice": 115.10746623,
+//         "askBid": "BID",
+//         "sequentialId": 15266316648400004,
+//         "timestamp": 1526631664840
+//     }
+// ]
+
 function betting() {
     console.log("\n----- Running betting task -----");
 
+    axios.all([
+        axios.get('https://www.okex.com/api/v1/ticker.do?symbol=btc_usdt'),
+        axios.get('https://www.binance.com/api/v3/ticker/price?symbol=BTCUSDT'),
+        axios.get('https://api.huobi.pro/market/detail?symbol=btcusdt'),
+        axios.get('https://api.bitfinex.com/v1/pubticker/btcusd'),
+        axios.get('https://crix-api.upbit.com/v1/crix/trades/ticks?code=CRIX.UPBIT.USDT-BTC&count=1')
+    ]).then(axios.spread((response1, response2, response3, response4, response5) => {
+            console.log("[OKEx]: ", response1.data.ticker.buy);
+            console.log("[Binance]: ", response2.data.price);
+            console.log("[Huobi]: ", response3.data.tick.high);
+            console.log("[Bitfinex]: ", response4.data.high);
+            console.log("[Upbit]: ", response5.data[0].tradePrice);
 
+
+    })).catch(error => {
+        console.log(error);
+    });
 };
 
 module.exports = betting;

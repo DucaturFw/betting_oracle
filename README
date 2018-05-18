@@ -66,3 +66,28 @@ btcusd oracle service
     "volume": "27176.28888098",
     "timestamp": "1526630903.732889"
 }
+
+
+/**
+ * Upbit
+ */
+- url: https://crix-api.upbit.com/v1/crix/trades/ticks?code=CRIX.UPBIT.USDT-BTC&count=1
+- response:
+[
+    {
+        "code": "CRIX.UPBIT.USDT-BTC",
+        "tradeDate": "2018-05-18",
+        "tradeTime": "08:21:12",
+        "tradeDateKst": "2018-05-18",
+        "tradeTimeKst": "17:21:12",
+        "tradeTimestamp": 1526631672227,
+        "tradePrice": 8130,
+        "tradeVolume": 0.60631367,
+        "prevClosingPrice": 8014.89253377,
+        "change": "RISE",
+        "changePrice": 115.10746623,
+        "askBid": "BID",
+        "sequentialId": 15266316648400004,
+        "timestamp": 1526631664840
+    }
+]
