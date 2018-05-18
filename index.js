@@ -13,7 +13,7 @@ dotenv.config();
 /**
  * Services
  */
-var bettingService = require("./src/services/sample");
+var bettingService = require("./src/services/betting");
 
 const bettingDaemon = schedule.scheduleJob("*/" + process.env.SCHEDULE_INTERVAL + " * * * * *", bettingService);
 
